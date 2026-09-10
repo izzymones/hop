@@ -190,7 +190,7 @@ class NMPCNode(Node):
                 if not msg.thrust_delay == 0.0: # check if there's an observed thrust
                     observed_thrust = msg.thrust
                     self.thrust_estimate = self.thrust_estimate * (1 - mc.obs_T_gain) + observed_thrust * mc.obs_T_gain
-                    state[13] = self.thrust_estimate
+                state[13] = self.thrust_estimate
 
             
                 # integrate the state forward with the control history before calling the nmpc
