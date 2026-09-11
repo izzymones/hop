@@ -69,12 +69,12 @@ class Constants:
         self.c3 = 49.08559429589006
         self.c4 = 0.05932377292335586
         self.c5 = 114.2556622092964
-        self.tau = 0.14
+        self.tau = 0.01
         self.obs_T_gain = 0.5
 
         # rotation about z axis caused by differential thrust between motors is modeled linearly with d
         self.d = 6.0
-        self.thrust_constant = 1.2
+        self.thrust_constant = 1.3
 
  
         # mechanical and hardware constants
@@ -119,7 +119,7 @@ class Constants:
         self.actuator_rate_costs = self.rate_scale_factor * np.array([
             1, 
             1, 
-            1.0/self.P_avg_dt, 
+            2.0/self.P_avg_dt, 
             1.0/self.P_diff_dt
         ])
 
