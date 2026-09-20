@@ -110,7 +110,7 @@ class OffBoardNode(Node):
         )
 
         ####################  locally store data ###################
-        self.state = mc.x0
+        self.state = mc.x0_13
 
         # state sample time
         # state send time
@@ -154,8 +154,8 @@ class OffBoardNode(Node):
             'state': self.state.full().flatten().tolist(),
             'control': self.control.tolist(),
             'timing': deepcopy(self.timing_data),
-            'pwm_motors': self.pwm_motors,
-            'pwm_servos': self.pwm_servos,
+            'pwm_motors': self.pwm_motors.copy(),
+            'pwm_servos': self.pwm_servos.copy(),
             'voltage': self.voltage,
             'parameters': mc.waypoints[self.waypoint_i].tolist(),
             'timestamp': perf_counter()

@@ -59,9 +59,10 @@ class Constants:
         # thrust is modeled as a degree 2 polynomial with coefficients a, b, c
         # that is scaled by a thrust curve constant
         self.tcc = 9.81 # thrust curve constant 
-        self.a = 1.647 * self.tcc
-        self.b = 0.9797 * self.tcc
-        self.c = 0.03 * self.tcc
+        self.a = 374.97 * self.tcc
+        self.b = -466.07 * self.tcc
+        self.c = 146.2 * self.tcc
+
 
         self.c0 = 1888.2404724800754
         self.c1 = -2569.898380151313
@@ -69,17 +70,17 @@ class Constants:
         self.c3 = 49.08559429589006
         self.c4 = 0.05932377292335586
         self.c5 = 114.2556622092964
-        self.tau = 0.01
+        self.tau = 0.1
         self.obs_T_gain = 0.5
 
         # rotation about z axis caused by differential thrust between motors is modeled linearly with d
         self.d = 6.0
-        self.thrust_constant = 1.3
+        self.thrust_constant = 1.0
 
  
         # mechanical and hardware constants
         # ---------------------------------------------------------------    
-        self.gimbal_offset = [4.0, 2.0]      
+        self.gimbal_offset = [2.6, -1.9]      
         self.outer_gimbal_range = [-20,20]          # outer gimbal range limit in degrees
         self.inner_gimbal_range = [-13.5,13.5]      # inner gimbal range limit in degrees
         self.theta_dot_constraint = 6.16            # gimbal rate of change limit in degrees per dt
@@ -92,12 +93,13 @@ class Constants:
         # ---------------------------------------------------------------        
         self.dt = 0.02 # 50 Hz like in paper
         self.x0 = ca.vertcat(0.0,0.0,0.0, 0.0,0.0,0.0, 0.0,0.0,0.0,1.0, 0.0,0.0,0.0, 0.0) # initial state                                                    # state cost matrix
+        self.x0_13 = ca.vertcat(0.0,0.0,0.0, 0.0,0.0,0.0, 0.0,0.0,0.0,1.0, 0.0,0.0,0.0) # initial state   
 
         # self.Q = ca.diag([80.0,80.0,100.0, 20.0,20.0,25.0, 2500.0,2500.0,200.0,200.0, 20.0,20.0,1.0 ])
         # self.Q = ca.diag([40.0,40.0,50.0, 10.0,10.0,15.0, 2500.0,2500.0,200.0,200.0, 30.0,30.0,1.0 ])
 
         # self.Q = ca.diag([50.0,50.0,50.0, 10.0,10.0,10.0, 526.0,526.0,15.0,0.0, 15.0,15.0,1.0 ])
-        self.Q = ca.diag([10.0,10.0,10.0, 3.0,3.0,3.0, 526.0,526.0,33.0,0.0, 10.0,10.0,8.0, 10])
+        self.Q = ca.diag([15.0,15.0,15.0, 4.0,4.0,4.0, 526.0,526.0,33.0,0.0, 10.0,10.0,8.0, 10])
         self.R = ca.diag([0.01, 0.01, 100, 100])
         
         self.gmb_deg_1pwm = 52
