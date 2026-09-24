@@ -118,7 +118,10 @@ class NMPCNode(Node):
             [np.array([0.0, 0.0, mc.hover_thrust, 0.0]) for i in range(mc.nmpc_delay)],
             maxlen=mc.nmpc_delay
         )
-        self.T_history = deque(maxlen=10)
+        self.T_history = deque(
+            [np.array((mc.hover_thrust, 23.0)) for i in range(10)],
+            maxlen=10
+            )
         self.thrust_estimate = mc.m * (-mc.gz) # assume we're just airborn 
 
         self.model = DroneModel(mc)
@@ -173,7 +176,7 @@ class NMPCNode(Node):
             parameters = mc.waypoints[self.waypoint_i]
             parameters[3] = msg.filtered_voltage   
             self.q = np.reshape(state[6:10], (4,))
-            control = np.array([mc.gimbal_offset[0], mc.gimbal_offset[1], 0.0, 0.0])
+            control = np.array([0.0, 0.0, mc.hover_thrust, 0.0])
 
             if runtime < 1.0:  # give gimbals time to position correctly
                 control[2] = 0.2
@@ -209,8 +212,8 @@ class NMPCNode(Node):
                 self.mpc.set_waypoint(parameters)
                 control = np.array(self.mpc.mpc.make_step(state)).flatten()
 
-            self.control_history.append(control.copy())
-            self.T_history.append((control[2], parameters[3]))
+                self.control_history.append(control.copy())
+                self.T_history.append((control[2], parameters[3]))
 
 
             # send control command to servos
