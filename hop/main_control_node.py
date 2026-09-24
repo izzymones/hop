@@ -201,25 +201,25 @@ class ControlNode(Node):
         self.nmpc_msg_count += 1        
         msg = NMPCInput()
         
-        # every 10th message we estimate the thrust and send it
-        if self.nmpc_msg_count % 10 == 0:
-            velocities = np.asarray(self.v_z_history, dtype=float)
-            times = np.asarray(self.v_z_times, dtype=float)
-            times = times - times[0]
-            a_z = np.polyfit(times, velocities, 1)[0] # fits a line and get the slope
-            _, _, theta = quaternion_to_angle(self.state[6:10])
-            msg.thrust = mc.m * (-mc.gz + a_z) / np.cos(theta * np.pi / 180.0)
-            msg.thrust_delay = np.mean(times)
-        else:
-            msg.thrust = 0.0
-            msg.thrust_delay = 0.0
+        # # every 10th message we estimate the thrust and send it
+        # if self.nmpc_msg_count % 10 == 0:
+        #     velocities = np.asarray(self.v_z_history, dtype=float)
+        #     times = np.asarray(self.v_z_times, dtype=float)
+        #     times = times - times[0]
+        #     a_z = np.polyfit(times, velocities, 1)[0] # fits a line and get the slope
+        #     _, _, theta = quaternion_to_angle(self.state[6:10])
+        #     msg.thrust = mc.m * (-mc.gz + a_z) / np.cos(theta * np.pi / 180.0)
+        #     msg.thrust_delay = np.mean(times)
+        # else:
+        msg.thrust = 0.0
+        msg.thrust_delay = 0.0
 
         msg.timestamp_sample = self.timestamp_sample
         msg.main_receive_time = self.main_receive_time
         msg.main_send_time = self.get_clock().now().nanoseconds // 1000
         msg.state = self.state
         msg.raw_voltage = self.raw_voltage
-        msg.filtered_voltage = self.filtered_voltage
+        msg.filtered_voltage = self.filtered_voltage 
 
         # additional info for thrust testing
         msg.current_a = self.current_a

@@ -8,7 +8,7 @@ class TestMotors(OffBoardNode):
 
     def __init__(self):
         super().__init__('test_motors', timelimit=100, dt=mc.dt)
-        self.dual_inc = 0.1
+        self.dual_inc = 0.01
         self.run_diff_test = False
         self.diff_pairs = []
         self.diff_test_i = 0
@@ -57,6 +57,10 @@ class TestMotors(OffBoardNode):
                 self.i += 1
 
         super().run_motors()        
+
+    def run_servos(self):
+        self.pwm_servos = [0.0 / mc.gmb_deg_1pwm, 3.0 / mc.gmb_deg_1pwm ]
+        super().run_servos()
 
 def main(args=None):
     rclpy.init(args=args)

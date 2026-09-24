@@ -14,7 +14,6 @@ class Constants:
         self.nmpc_delay = 3 # how many cycles it takes for the control to be actuated 
 
         self.battery_v = 25.0 # 25 volt battery
-        self.v_alpha = 0.92 # factor for low pass filter of voltage
 
         # model related constants
         # ---------------------------------------------------------------
@@ -58,19 +57,13 @@ class Constants:
         # thrust model and mapping
         # thrust is modeled as a degree 2 polynomial with coefficients a, b, c
         # that is scaled by a thrust curve constant
-        self.tcc = 9.81 # thrust curve constant 
-        self.a = 374.97 * self.tcc
-        self.b = -466.07 * self.tcc
-        self.c = 146.2 * self.tcc
+        self.a = 16.35
+        self.b = 10.45
+        self.c = -0.34
+        self.tau = 0.07
+        self.v_alpha = 0.9
+        self.thrust_constant = 1.0
 
-
-        self.c0 = 1888.2404724800754
-        self.c1 = -2569.898380151313
-        self.c2 = -85.72545031537854
-        self.c3 = 49.08559429589006
-        self.c4 = 0.05932377292335586
-        self.c5 = 114.2556622092964
-        self.tau = 0.1
         self.obs_T_gain = 0.5
 
         # rotation about z axis caused by differential thrust between motors is modeled linearly with d

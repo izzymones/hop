@@ -175,9 +175,8 @@ class NMPCNode(Node):
             self.q = np.reshape(state[6:10], (4,))
             control = np.array([mc.gimbal_offset[0], mc.gimbal_offset[1], 0.0, 0.0])
 
-            if state[2] < 0.4 and self.takeoff_pwm_avg < 0.65:  # ramp up motors slowly for takeoff
-                self.takeoff_pwm_avg += 0.005
-                control[2] = self.takeoff_pwm_avg
+            if runtime < 1.0:  # give gimbals time to position correctly
+                control[2] = 0.2
             else:                                   # full NMPC takes over control once we're in the air
                 if self.first_nmpc_call:
                     self.first_nmpc_call = False
@@ -187,13 +186,13 @@ class NMPCNode(Node):
                 # sometimes we use an observed thrust value to improve the thrust model
                 # it's stale when we get it so we use the model to move it forward to current time
                 # does moving it forward help or is the model so bad it is noise?
-                if not msg.thrust_delay == 0.0: # check if there's an observed thrust
-                    observed_thrust = msg.thrust
-                    steps = round(msg.thrust_delay / mc.dt)
-                    if 0 < steps <= len(self.T_history):
-                        for p_avg, voltage in list(self.T_history)[-steps:]:
-                            observed_thrust = self.equations.thrust_step(observed_thrust, p_avg, voltage) 
-                    self.thrust_estimate = self.thrust_estimate * (1 - mc.obs_T_gain) + observed_thrust * mc.obs_T_gain
+                # if not msg.thrust_delay == 0.0: # check if there's an observed thrust
+                #     observed_thrust = msg.thrust
+                #     steps = round(msg.thrust_delay / mc.dt)
+                #     if 0 < steps <= len(self.T_history):
+                #         for p_avg, voltage in list(self.T_history)[-steps:]:
+                #             observed_thrust = self.equations.thrust_step(observed_thrust, p_avg, voltage) 
+                #     self.thrust_estimate = self.thrust_estimate * (1 - mc.obs_T_gain) + observed_thrust * mc.obs_T_gain
                 state[13] = self.thrust_estimate
 
 
