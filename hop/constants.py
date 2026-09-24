@@ -64,6 +64,12 @@ class Constants:
         self.v_alpha = 0.9
         self.thrust_constant = 1.0
 
+        self.c0 = 0.0
+        self.c1 = 0.0
+        self.c2 = 0.0
+        self.c3 = 0.0
+        self.c4 = 0.0
+        self.c5 = 0.0
         self.obs_T_gain = 0.5
 
         # rotation about z axis caused by differential thrust between motors is modeled linearly with d
