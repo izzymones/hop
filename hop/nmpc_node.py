@@ -115,7 +115,7 @@ class NMPCNode(Node):
         self.equations = Equations6DOF(mc)
         self.rk_sim = RKSimulator(0.02, 1) # set up to make one 20ms step
         self.control_history = deque(
-            [np.array([0.0, 0.0, mc.hover_thrust, 0.0]) for i in range(mc.nmpc_delay)],
+            [np.array([-mc.gimbal_offset[0], -mc.gimbal_offset[0], mc.hover_thrust, 0.0]) for i in range(mc.nmpc_delay)],
             maxlen=mc.nmpc_delay
         )
         self.T_history = deque(
@@ -176,7 +176,7 @@ class NMPCNode(Node):
             parameters = mc.waypoints[self.waypoint_i]
             parameters[3] = msg.filtered_voltage   
             self.q = np.reshape(state[6:10], (4,))
-            control = np.array([0.0, 0.0, mc.hover_thrust, 0.0])
+            control = np.array([-mc.gimbal_offset[0], -mc.gimbal_offset[0], mc.hover_thrust, 0.0])
 
             if runtime < 1.0:  # give gimbals time to position correctly
                 control[2] = 0.2
